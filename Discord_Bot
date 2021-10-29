@@ -1,0 +1,97 @@
+import discord
+import random
+from discord.ext import commands
+import requests
+
+client = commands.Bot(command_prefix='!')
+valid_users = ['Dillon Cool#3686', 'mrpurdycs#1257']
+
+@client.command()
+async def ping(ctx):
+    await ctx.send('pong')
+    
+@client.command()
+async def ding(ctx):
+    await ctx.send('dong')
+
+@client.command()
+async def lenny(ctx):
+    await ctx.send('( ͡° ͜ʖ ͡°)')
+    
+@client.command()
+async def isspos(ctx):
+    response = requests.get('http://api.open-notify.org/iss-now.json')
+    print(response)
+    response_json  = response.json()
+    print(response_json)
+    await ctx.send(f'Raw Data: {response.json()}')
+    
+
+    
+@client.command()
+async def  commands(ctx):
+    await ctx.send('!commands - Shows a list of avaliable commands')
+    await ctx.send('!ping - Responses with pong')
+    await ctx.send('!lenny - Responses with a lenny face')
+    await ctx.send('!isspos - Shows latitude and longitude of the iss in realtime')
+    await ctx.send('!kick (name) - Kicks someone from the server (only authorized users!)')
+    await ctx.send('!ban (name) - Bans someone from the server (only authorized users!)')
+    await ctx.send('!unban (name) - Unbans someone from the server (only authorized users!)')
+    await ctx.send('!magic8ball (question) - Answers the question')
+    
+    
+
+@client.command(pass_context=True)
+async def kick(ctx, member: discord.Member, *, reason = None):
+    if str(ctx.message.author) in valid_users:
+        await member.kick(reason=reason)
+        await ctx.send(f'Kicked {member}.')
+    else:
+        await ctx.send('You are not allowed to do this.')
+    
+@client.command(pass_context=True)
+async def ban(ctx, member: discord.Member, *, reason = None):
+    if str(ctx.message.author) in valid_users:
+        await ctx.send(f'Banned {member}.')
+        await member.ban(reason=reason) 
+    else:
+        await ctx.send('You are not allowed to do this.')
+    
+@client.command()
+async def unban(ctx, *, member):
+    if str(ctx.message.author) in valid_users:
+        banned_users = await ctx.guild.bans()
+        for ban_entry in banned_users:
+            user = ban_entry.user
+            await ctx.guild.unban(user)
+            await ctx.send(f'Unbanned {member}.')
+    else:
+        await ctx.send('You are not allowed to do this.')
+        
+
+@client.command(pass_context=True)
+async def magic8ball(ctx):
+    await ctx.send(random.choice(["It is certain. :8ball:",
+                                  "It is decidedly so. :8ball:",
+                                  "Without a doubt. :8ball: ",
+                                  "Yes - definitely. :8ball: ",
+                                  "You may rely on it. :8ball: ",
+                                  "As I see it, yes. :8ball: ",
+                                  "Most likely. :8ball: ",
+                                  "Outlook good. :8ball: ",
+                                  "Yes.",
+                                  "Signs point to yes. :8ball: ",
+                                  "Reply hazy, try again. :8ball: ",
+                                  "Ask again later.",
+                                  "Better not tell you now. :8ball: ",
+                                  "Cannot predict now.",
+                                  "Concentrate and ask again. :8ball: ",
+                                  "Don't count on it. :8ball: ",
+                                  "My reply is no. :8ball: ",
+                                  "My sources say no. :8ball: ",
+                                  "Outlook not so good. :8ball: ",
+                                  "Very doubtful. :8ball:",
+                                  "Ok. :8ball:"]))
+        
+
+client.run('NjkwMDI3MzI3MDc3NDgyNjE4.XnMFsg.YzXmreBD772RsS6Zo6SqsMi6tNQ')
