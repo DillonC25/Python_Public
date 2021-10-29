@@ -1,0 +1,199 @@
+import os
+import ast
+import matplotlib.pyplot as plt
+from scipy.interpolate import make_interp_spline, BSpline
+import numpy as np
+from scipy.interpolate import interp1d
+
+save_file = 'save_file.txt.'
+# load list from file
+if os.path.exists(save_file):
+    with open(save_file) as f:
+            my_list = ast.literal_eval(f.read())
+
+#print(my_list)
+temp_list = []
+average_total = 0
+global dates
+
+dates = []
+for i in range(len(my_list)):
+        dates.append(my_list[i][0])
+# Date, DOW, Case numbers, Deaths, Currently in Hospital, ICU
+do = input("Would you like to view or input data?: ")
+
+    
+def total_cases():
+    total_cases = []
+    
+    for i in range(len(my_list)):
+        total_cases.append(my_list[i][2])
+    for i in range(len(total_cases)):
+        total_cases[i] = int(total_cases[i])
+        
+    
+    plt.plot(dates,total_cases)
+    plt.ylabel("Daily case numbers for all days")
+    plt.xlabel("Dates")
+    plt.show()
+    
+def n_cases():
+    days = []
+    case = []
+    dates = []
+    average_days = []
+    print("How many days would you like to view? (cases)")
+    avg_num = input()
+    avg_num = int(float(avg_num))
+    day = my_list[avg_num-avg_num-avg_num:]
+    days.append(day)
+    for x in range(avg_num):
+        case = days[0][x][2]
+        average_days.append(case)
+    for i in range(len(average_days)):
+        average_days[i] = int(average_days[i])
+    days2 = average_days
+    for i in range(len(average_days)):
+        average_days[i] += average_total
+    average_days = (sum(average_days)/len(average_days))
+    print(average_days)
+    plt.plot(days2)
+    plt.ylabel("Daily case numbers for the past n days")
+    plt.show()
+def total_deaths():
+    total_deaths = []
+    for i in range(len(my_list)):
+        total_deaths.append(my_list[i][3])
+    for i in range(len(total_deaths)):
+        total_deaths[i] = int(total_deaths[i])
+    plt.plot(dates,total_deaths)
+    plt.ylabel("Daily deaths for all days")
+    plt.xlabel("Dates")
+    plt.show()
+def n_deaths():
+    days = []
+    case = []
+    dates = []
+    average_days = []
+    print("How many days would you like to view? (deaths)")
+    n = input()
+    n = int(float(n))
+    day = my_list[n-n-n:]
+    days.append(day)
+    for x in range(n):
+        case = days[0][x][3]
+        average_days.append(case)
+    for i in range(len(average_days)):
+        average_days[i] = int(average_days[i])
+    days2 = average_days
+    for i in range(len(average_days)):
+        average_days[i] += average_total
+    average_days = (sum(average_days)/len(average_days))
+    print(average_days)
+    plt.plot(days2)
+    plt.ylabel("Daily deaths for the past n days")
+    plt.show()
+    
+def total_hoss():
+    total_hos = []
+    for i in range(len(my_list)):
+        total_hos.append(my_list[i][4])
+    for i in range(len(total_hos)):
+        total_hos[i] = int(total_hos[i])
+    plt.plot(dates,total_hos)
+    plt.ylabel("Daily hospitals for all days")
+    plt.xlabel("Dates")
+    plt.show()
+def n_hos():
+    days = []
+    case = []
+    dates = []
+    average_days = []
+    print("How many days would you like to view? (hospitals)")
+    n = input()
+    n = int(float(n))
+    day = my_list[n-n-n:]
+    days.append(day)
+    for x in range(n):
+        case = days[0][x][4]
+        average_days.append(case)
+    for i in range(len(average_days)):
+        average_days[i] = int(average_days[i])
+    days2 = average_days
+    for i in range(len(average_days)):
+        average_days[i] += average_total
+    average_days = (sum(average_days)/len(average_days))
+    print(average_days)
+    plt.plot(days2)
+    plt.ylabel("Daily hospitals for the past n days")
+    plt.show()
+def total_icus():
+    total_icu = []
+    for i in range(len(my_list)):
+        total_icu.append(my_list[i][5])
+    for i in range(len(total_icu)):
+        total_icu[i] = int(total_icu[i])
+    plt.plot(dates,total_icu)
+    plt.ylabel("Daily icu for all days")
+    plt.xlabel("Dates")
+    plt.show()
+def n_icu():
+    days = []
+    case = []
+    dates = []
+    average_days = []
+    print("How many days would you like to view? (icu)")
+    n = input()
+    n = int(float(n))
+    day = my_list[n-n-n:]
+    days.append(day)
+    for x in range(n):
+        case = days[0][x][5]
+        average_days.append(case)
+    for i in range(len(average_days)):
+        average_days[i] = int(average_days[i])
+    days2 = average_days
+    for i in range(len(average_days)):
+        average_days[i] += average_total
+    average_days = (sum(average_days)/len(average_days))
+    print(average_days)
+    plt.plot(days2)
+    plt.ylabel("Daily icu for the past n days")
+    plt.show()
+    
+if do == "view":
+    n_cases()
+    total_cases()
+    total_hoss()
+    n_hos()
+    total_icus()
+    n_icu()
+    total_deaths()
+    n_deaths()
+    
+    
+    
+else:
+    while True:
+        temp_list = []
+        date = input("What is the Date? (DDMMYY): ")
+        if date == "stop":
+            break
+        DOW = input("What is the Day of the week?: ")
+        nums = input("What are the case numbers?: ")
+        deaths = input("Number of Deaths?: ")
+        hospital = input("Currently in Hospital?: ")
+        ICU = input("Currently in ICU: ")
+        temp_list.append(date)
+        temp_list.append(DOW)
+        temp_list.append(nums)
+        temp_list.append(deaths)
+        temp_list.append(hospital)
+        temp_list.append(ICU)
+        my_list.append(temp_list)
+
+
+
+with open(save_file, 'w') as f:
+    f.write(str(my_list))
+
